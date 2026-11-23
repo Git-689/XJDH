@@ -194,7 +194,8 @@ class AboutModule {
         const qqBtn = document.getElementById('aboutQQBtn');
         if (qqBtn) {
             qqBtn.addEventListener('click', () => {
-                window.open('https://yunzhiapi.cn/API/QQtzmp.php?token=XIZhAXKnSQcH&qq=1595126534', '_blank');
+                // ===== 安全修复：移除 yunzhiapi 明文 token，改用 QQ 官方临时会话链接 =====
+                window.open('https://wpa.qq.com/msgrd?v=3&uin=1595126534&site=qq&menu=yes', '_blank');
             });
         }
         const githubBtn = document.getElementById('aboutGithubBtn');
