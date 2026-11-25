@@ -4,6 +4,7 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; style-src 'self' 'unsafe-inline' https: data:; img-src * data: blob:; media-src * https:; connect-src *; font-src 'self' https: data:; frame-src 'self' https:; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests;
 
 # ===== 首页不缓存 =====
 /index.html
@@ -31,5 +32,3 @@
 # JS 文件（缓存 1 小时）
 /js/*.js
   Cache-Control: public, max-age=3600
-
-# 第三方 CDN 资源（由 CDN 管理，不覆盖）
