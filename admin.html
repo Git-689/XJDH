@@ -4,8 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>星聚导航后台管理</title>
-    
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://api.xjdh688.ccwu.cc https://api.pearapi.ai 'unsafe-inline' https://cdn.jsdelivr.net;
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data: https:;
+        connect-src 'self' https://api.xjdh688.ccwu.cc https://api.pearapi.ai;
+        font-src 'self' https://cdn.jsdelivr.net;
+        frame-ancestors 'none';
+        base-uri 'none';
+        form-action 'self';
+        upgrade-insecure-requests;
+    ">
     <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Frame-Options" content="DENY">
     <meta name="theme-color" content="#4361ee">
 
     <script>
@@ -22,10 +34,6 @@
             window.ADMIN_API_BASE = apiBase;
         })();
     </script>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/fontawesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/solid.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/brands.min.css">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -108,20 +116,75 @@
         .announcement-buttons { display: flex; gap: 8px; }
         @media (max-width: 768px) { body { padding: 12px; } .content-layout { flex-direction: row !important; gap: 8px; } .sidebar, .main-content { min-width: 0; padding: 8px; } .action-buttons-row button { font-size: 10px; padding: 5px 8px; min-width: 60px; } .tab-btn { padding: 4px 10px; font-size: 11px; } .stats-cards { grid-template-columns: repeat(2, 1fr); gap: 8px; } .stat-card-mini .stat-number { font-size: 16px; } }
         @media (max-width: 480px) { body { padding: 8px; } .stats-cards { grid-template-columns: 1fr 1fr; gap: 6px; } .stat-card-mini { padding: 8px 12px; } .stat-card-mini .stat-number { font-size: 14px; } .action-buttons-row button { font-size: 9px; padding: 4px 6px; min-width: 50px; } .cat-item { font-size: 10px; padding: 4px 8px; } }
+        .submission-title-truncate { display: inline-block; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
         .custom-select-wrapper { position: relative; flex: 1; min-width: 110px; }
-        .custom-select-trigger { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; color: #1e293b; cursor: pointer; gap: 6px; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; user-select: none; min-height: 32px; }
+        .custom-select-trigger {
+            display: flex; align-items: center; justify-content: space-between; padding: 6px 10px;
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+            font-size: 12px; color: #1e293b; cursor: pointer; gap: 6px;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            user-select: none;
+            min-height: 32px;
+        }
         .custom-select-trigger:hover { border-color: #3b82f6; background: #f8fafc; }
         .custom-select-trigger.open { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.12); background: #fff; }
         .custom-select-value { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; }
-        .custom-select-arrow { width: 12px; height: 12px; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='%2364748b' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-size: contain; background-repeat: no-repeat; transition: transform 0.25s ease; }
+        .custom-select-arrow {
+            width: 12px; height: 12px; flex-shrink: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='%2364748b' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-size: contain; background-repeat: no-repeat;
+            transition: transform 0.25s ease;
+        }
         .custom-select-trigger.open .custom-select-arrow { transform: rotate(180deg); }
-        .custom-select-dropdown { position: fixed; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); z-index: 1000; max-height: 200px; overflow-y: auto; opacity: 0; visibility: hidden; transform: translateY(-6px) scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s; scrollbar-width: none; -ms-overflow-style: none; }
+        .custom-select-dropdown {
+            position: fixed;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px) scale(0.96);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
         .custom-select-dropdown::-webkit-scrollbar { display: none; }
-        .custom-select-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-        .custom-select-option { padding: 8px 12px; font-size: 12px; color: #1e293b; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .custom-select-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .custom-select-option {
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #1e293b;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .custom-select-option:hover { background: #f1f5f9; }
         .custom-select-option.selected { background: #e0f2fe; color: #0369a1; font-weight: 500; }
-        .batch-toolbar { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; padding: 6px 10px; margin-bottom: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #eef2f6; align-items: center; flex-shrink: 0; scrollbar-width: none; -ms-overflow-style: none; }
+        .batch-toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 6px 10px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #eef2f6;
+            align-items: center;
+            flex-shrink: 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
         .batch-toolbar::-webkit-scrollbar { display: none; }
         .batch-toolbar .batch-label { font-size: 12px; font-weight: 500; color: #475569; flex-shrink: 0; }
         .batch-toolbar .batch-count { font-size: 12px; color: #3b82f6; font-weight: 600; flex-shrink: 0; }
@@ -260,6 +323,9 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/js/all.min.js"></script>
+
     <script>
         /* admin.js - 已移除登录，直接进入后台 */
         (function() {
@@ -317,17 +383,12 @@
                 try {
                     const res = await fetch(API_BASE + endpoint, { ...opt, headers });
                     if (!res.ok) {
-                        // 如果是 4xx 错误，不重试，直接抛出
-                        if (res.status >= 400 && res.status < 500) {
-                            let errMsg = '请求失败';
-                            try {
-                                const data = await res.json();
-                                errMsg = data.error?.message || data.error || errMsg;
-                            } catch (e) {}
-                            throw new Error(errMsg);
-                        }
-                        // 5xx 错误可以重试
-                        throw new Error('服务器繁忙');
+                        let errMsg = '请求失败';
+                        try {
+                            const data = await res.json();
+                            errMsg = data.error?.message || data.error || errMsg;
+                        } catch (e) {}
+                        throw new Error(errMsg);
                     }
                     return res.json();
                 } catch (error) {
@@ -996,7 +1057,7 @@
                         if (!title || !url) { showToast('标题和网址必填', 'error'); return; }
                         if (!checkUrl(url)) { showToast('网址格式错误', 'error'); return; }
                         if (isUrlExists(url)) { showToast('该网址已存在，请勿重复添加', 'error'); return; }
-                        const res = await apiFetch('/admin/sites', { method:'POST', body: JSON.stringify({
+                        await apiFetch('/admin/sites', { method:'POST', body: JSON.stringify({
                             subcategory_id: currentSub,
                             title,
                             url,
@@ -1006,9 +1067,8 @@
                         })});
                         showToast('添加成功', 'success');
                         closeModal();
-                        // 修复：使用服务端返回的真实 ID
                         const newSite = {
-                            id: res.id,
+                            id: Date.now(),
                             subcategory_id: currentSub,
                             title,
                             url,
@@ -1075,20 +1135,6 @@
                     list.querySelectorAll('[data-action="replaceLink"]').forEach(btn => btn.addEventListener('click', replaceLinkHandler));
                     list.querySelectorAll('[data-action="ignoreLink"]').forEach(btn => btn.addEventListener('click', ignoreLinkHandler));
                 } catch { list.innerHTML = '<div class="empty">加载失败</div>'; }
-            }
-
-            async function clearAllFeedback() {
-                if (!confirm('确定要清空全部反馈吗？此操作不可恢复！')) return;
-                try {
-                    const data = await apiFetch('/admin/dead-link-reports');
-                    for (const item of data) {
-                        await apiFetch(`/admin/dead-link-reports/${item.id}`, { method: 'DELETE' });
-                    }
-                    showToast('已清空全部反馈', 'success');
-                    await loadFeedback();
-                } catch (e) {
-                    showToast('清空失败: ' + e.message, 'error');
-                }
             }
 
             async function replaceLinkHandler(e) {
@@ -1827,7 +1873,6 @@
                 document.getElementById('addSubBtn').addEventListener('click', handleAddSub);
                 document.getElementById('addSiteBtn').addEventListener('click', handleAddSite);
                 document.getElementById('refreshFeedbackBtn').addEventListener('click', loadFeedback);
-                document.getElementById('clearAllFeedbackBtn').addEventListener('click', clearAllFeedback); // 修复：绑定清空按钮
                 document.getElementById('annPublishBtn').addEventListener('click', saveAnnouncement);
                 document.getElementById('annClearBtn').addEventListener('click', clearAnnouncementForm);
                 document.getElementById('annCancelBtn').addEventListener('click', () => {
@@ -1888,6 +1933,7 @@
 
             injectGlobalStyles();
 
+            // ===== 直接启动：加载数据 =====
             (async () => {
                 await loadAllData();
                 await loadAnnouncement();
